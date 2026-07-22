@@ -11,19 +11,19 @@ app.get("/non-blockeable", (req, res) => {
 
 app.get("/blockeable", (req, res) => {
     let result = 0;
-    for (let i = 0; i < 200_000_000_000; i++) {
+    for (let i = 0; i < 200_000_000_00; i++) {
         result += Math.sqrt(i);
     }
 
-    res.status(200).send(`This is a main thread blockeable route. The result is: ${count}`);
+    res.status(200).send(`This is a main thread blockeable route. The result is: ${result}`);
 });
 
-app.get("/count-with-workers", async (req, res) => {
+app.get("/with-workers", async (req, res) => {
     const promises = [];
 
     for (let i = 1; i < THREADS_NUMBER; i++) {
-        const init = i * 50_000_000_000;
-        const end = (i + 1) * 50_000_000_000;
+        const init = i * 50_000_000_00;
+        const end = (i + 1) * 50_000_000_00;
 
         promises.push(
             new Promise((resolve, reject) => {
@@ -38,9 +38,9 @@ app.get("/count-with-workers", async (req, res) => {
     }
 
     const results = await Promise.all(promises);
-    const totalCount = results.reduce((acc, curr) => acc + curr, 0);
+    const totalResult = results.reduce((acc, curr) => acc + curr, 0);
 
-    res.status(200).send(`This is a worker thread route. The total result is: ${totalCount}`);
+    res.status(200).send(`This is a worker thread route. The total result is: ${totalResult}`);
 });
 
 app.listen(3000, () => {
